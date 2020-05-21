@@ -1,206 +1,399 @@
-<html>
-  <head>
 
-	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	  <script src="https://lpcdn.lpsnmedia.net/unifiedwindow/widgetSDK.min.js"></script>
-	  
-	  
-	  <script>
-		  $(document).ready(function() {
-			  console.log("widgetSDK init");
-			  var lpWidgetSDK;
-			  var widgetSDKAPI = window.lpTag.LPWidgetSDK.API
-			  var opts = {bind: {}}
-			  var bindingEvent = [widgetSDKAPI.events.CONVERSATION_INFO,
-				      widgetSDKAPI.events.MESSAGES,
-				      widgetSDKAPI.events.PARTICIPANTS,
-				      widgetSDKAPI.events.UI_WIDGET,
-				      widgetSDKAPI.events.UI_WINDOW];
-			  bindingEvent.forEach(function (eventName) {
-				  opts.bind[eventName] = {func: _onEvent, context: this};
-			  });
-			  
-			  console.log(opts);
-			  
-			  lpWidgetSDK = window.lpTag.LPWidgetSDK.init(opts);
-			  
-			  function disposeWidget() {
-				  lpWidgetSDK.dispose(function (data) {
-					  console.log("widget has been disposed");
-				  });
-			  }
-			  
-			  
-			  function sendNotification(text) {
-				  if (typeof text === "string") {
-					  console.log("testo");
-					  lpWidgetSDK.notify(text, function (err) {
-						  if (err) {
-							  console.log("Error on sending notification from widget");
-						  }
-					  });
-				  }
-			  }
-			  
-			  
-			  
-			  
-			  function _onEvent(eventData) {
-				  
-				  sendNotification("event checked!");
-				  console.log("checked");
-				  
-				  
-				  if (eventData && widgetSDKAPI.events.MESSAGES === eventData.type) {
-					  var text = eventData.data && typeof  eventData.data.content === "string" && eventData.data.content;
-					  
-					  if (text) {
-						  if(eventData.data.ts > (Date.now() - 60000)){
-							  if (text && text.indexOf("@url") > -1) {
-								  var posturl = text.replace("@url ", "");
-								  if (posturl.indexOf("?") > 1){
-									  posturl = posturl + "lpTag=false";
-								  } else{
-									  posturl = posturl + "?lpTag=false";
-								  }
-								  $("#youtubeDiv").html('<object width="380" height="380" data="' + posturl + '"/>');
-								  sendNotification("url checked!");
-								  // disposeWidget();
-							  }
+<!DOCTYPE html>
+<!--[if IEMobile 7]><html class="iem7"  lang="fi" dir="ltr"><![endif]-->
+<!--[if lte IE 6]><html class="lt-ie9 lt-ie8 lt-ie7"  lang="fi" dir="ltr"><![endif]-->
+<!--[if (IE 7)&(!IEMobile)]><html class="lt-ie9 lt-ie8"  lang="fi" dir="ltr"><![endif]-->
+<!--[if IE 8]><html class="lt-ie9"  lang="fi" dir="ltr"><![endif]-->
+<!--[if (gte IE 9)|(gt IEMobile 7)]><!--><html  lang="fi" dir="ltr" prefix="content: http://purl.org/rss/1.0/modules/content/ dc: http://purl.org/dc/terms/ foaf: http://xmlns.com/foaf/0.1/ og: http://ogp.me/ns# rdfs: http://www.w3.org/2000/01/rdf-schema# sioc: http://rdfs.org/sioc/ns# sioct: http://rdfs.org/sioc/types# skos: http://www.w3.org/2004/02/skos/core# xsd: http://www.w3.org/2001/XMLSchema#"><!--<![endif]-->
+<!--Gratorama-is-alive-->
+<head profile="http://www.w3.org/1999/xhtml/vocab">
+  <!--[if IE]><![endif]-->
+<meta charset="utf-8" />
+<link rel="shortcut icon" href="https://fi.gratorama.com/sites/gratorama.com/files/favicon_3_0.ico" type="image/vnd.microsoft.icon" />
+<meta name="Description" content="Gratorama.com on hauska raaputusarpoja ja kolikkopelejä omaava ohjelmisto, joka on luotu antamaan erinomaisen pelikokemuksen jota et löydä mistään muualta. Kokenut ja intohimoinen tiimi johtajia, kehittäjiä ja tukihenkilöitä ovat huipputeknologiaa käyttäen huolella kehittäneet hauskoja pelejä sinun nautitavaksesi. Olemme asettaneet tavoitteeksemme korkealaatuisimman Gratorama-kokemuksen saavuttamisen kaikki näkökulmat huomioiden." />
+<link rel="shortlink" href="https://fi.gratorama.com/node/1733" />
+<meta name="Generator" content="Drupal 7 (http://drupal.org)" />
+<link rel="canonical" href="https://fi.gratorama.com/index.html" />
+<meta name="Keywords" content="Gratorama, raaputuspelit raaputuskortit, raaputuskorttipelit, online raaputuspelit, online raaputuskortti raaputuslippu lottokuponki, pelit, ilmaiset pelit, Gratorama.com" />
+  <title>Gratorama - Pelaa meidän online –raaputuskorttipelejämme ja pelikoneitamme ja ole voittaja!</title>
 
-							  
-						  }
-					  }
-				  } else if (eventData && widgetSDKAPI.events.CONVERSATION_INFO === eventData.type) {
-					  var state = eventData.data && eventData.data.state === "ended";
-					  if (state) {
-						  disposeWidget();
-					  }
-				  }
-				  
-				  
-			  }
-		  });
-		  
-		  
-  
-		  
-		  
-	  </script>
-	  
-	  
-	  
-    <script type="application/javascript">
+      <meta name="MobileOptimized" content="width">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="cleartype" content="on">
 
-        var lpWidgetSDK,
-        widgetSDKAPI = lpTag.LPWidgetSDK.API;
-        window.addEventListener("load", function () {
-            var bindingEvent = [widgetSDKAPI.events.CONVERSATION_INFO, widgetSDKAPI.events.MESSAGES],
-                    opts = {bind: {}};
-            bindingEvent.forEach(function (eventName) {
-                opts.bind[eventName] = {func: _onEvent, context: this};
-            });
-            lpWidgetSDK = lpTag.LPWidgetSDK.init(opts);
-        }.bind(this));
-        function _onEvent(eventData) {
-	    console.log(JSON.stringify(eventData));
-            if (eventData && widgetSDKAPI.events.MESSAGES === eventData.type) {
-                var text = eventData.data && typeof  eventData.data.content === "string" && eventData.data.content;
-		    // console.log(text);
-                if (text) {
-			if(eventData.data.ts > (Date.now() - 600000)){
-				funci(text);
-			}
-                    
-                }
-            } else if (eventData && widgetSDKAPI.events.CONVERSATION_INFO === eventData.type) {
-                var state = eventData.data && eventData.data.state === "ended";
-		    // console.log(eventData.data);
-                if (state) {
-                    disposeWidget();
-                }
-            }
-        }
-        function disposeWidget() {
-            lpWidgetSDK.dispose(function (data) {
-                console.log("widget has been disposed");
-            });
-        }
-       
-        function isYTSearch(text) {
-            var div = document.createElement("div");
-            div.innerHTML = text;
-            var noHtmlText = div.childNodes[0].innerText;
-            var result = "";
-            if (noHtmlText) {
-                result = noHtmlText
-            } else {result = text}
-            if (result && result.indexOf("@youtube") > -1) {
-                sendNotification("Event received!");
-                return result.replace("@youtube", "");
-            }
-            else if (result && result.indexOf("@filetransfer") > -1) {
-                sendNotification("Event received!");
-                //window.location.href = "https://lngawspushapp.herokuapp.com/index.php";
-                $("#youtubeDiv")
-                                  .html('<object width="380" height="380" data="https://lngawspushapp.herokuapp.com/index.php"/>');
-            }
-            else if (result && result.indexOf("@filemarco") > -1) {
-                sendNotification("Event received!");
-                
-                $("#youtubeDiv")
-                                  .html('<object width="380" height="380" data="https://marcodagolini.github.io/FileTransfer/index.html"/>');
-            }
-		
-	    else if (result && result.indexOf("@url") > -1) {
-                sendNotification("Event received!");
-		var posturl = result.replace("@url ", "");
-		if (posturl.indexOf("?") > 1){
-			posturl = posturl + "lpTag=false";
-		} else{
-			posturl = posturl + "?lpTag=false";
-		}
-               
-                $("#youtubeDiv")
-                                  .html('<object width="380" height="380" data="' + posturl + '"/>');
-            }
-        }
-        function sendNotification(text) {
-            if (typeof text === "string") {
-		    console.log("testo");
-                lpWidgetSDK.notify(text, function (err) {
-                    if (err) {
-                        console.log("Error on sending notification from widget");
-                    }
-                });
-            }
-        }
-         var funci = function(text) {
-		     result = isYTSearch(text);
-		     if (result) {
-		         return ytEmbed.init({
-		             'player': 'embed',
-		             'display_first': 'true',
-		             'block': 'youtubeDiv',
-		             'type': 'search',
-		             'q': result,
-		             'results': '1',
-		             'layout': 'thumbnails',
-		             'height': '330',
-		             'width': '380'
-		         });
-		     }
-		 };
-        $(document).ready(function(){
-            funci();
-        });
-	    
-    </script>
+
+  <style>
+@import url("//fi.gratorama.com/modules/system/system.base.css?q9w8k1");
+@import url("//fi.gratorama.com/modules/system/system.messages.css?q9w8k1");
+@import url("//fi.gratorama.com/modules/system/system.theme.css?q9w8k1");
+</style>
+<style>
+@import url("//fi.gratorama.com/modules/field/theme/field.css?q9w8k1");
+@import url("//fi.gratorama.com/modules/node/node.css?q9w8k1");
+@import url("//fi.gratorama.com/modules/user/user.css?q9w8k1");
+@import url("//fi.gratorama.com/sites/all/modules/views/css/views.css?q9w8k1");
+</style>
+<style>
+@import url("//fi.gratorama.com/sites/all/modules/ctools/css/ctools.css?q9w8k1");
+</style>
+<style>
+@import url("//fi.gratorama.com/sites/all/themes/gratorama3/css/style.css?q9w8k1");
+@import url("//fi.gratorama.com/sites/all/themes/gratorama3/css/stylish-select.css?q9w8k1");
+@import url("//fi.gratorama.com/sites/all/themes/gratorama3/css/mobile.css?q9w8k1");
+</style>
+  <script src="https://fi.gratorama.com/sites/all/modules/jquery_update/replace/jquery/1.8/jquery.min.js?v=1.8.3"></script>
+<script src="https://fi.gratorama.com/misc/jquery.once.js?v=1.2"></script>
+<script src="https://fi.gratorama.com/misc/drupal.js?q9w8k1"></script>
+<script src="https://fi.gratorama.com/sites/all/themes/gratorama3/js/swfobject.js?q9w8k1"></script>
+<script src="https://fi.gratorama.com/sites/all/themes/gratorama3/js/jquery.stylish-select.min.js?q9w8k1"></script>
+<script src="https://fi.gratorama.com/sites/all/themes/gratorama3/js/ui.js?q9w8k1"></script>
+<script>jQuery.extend(Drupal.settings, {"basePath":"\/","pathPrefix":"","ajaxPageState":{"theme":"gratorama3","theme_token":"PrIQ3BtM_wtLhptHXiqUX16dTMNbg5Ua90Y2inOpXJo","js":{"sites\/all\/modules\/jquery_update\/replace\/jquery\/1.8\/jquery.min.js":1,"misc\/jquery.once.js":1,"misc\/drupal.js":1,"sites\/all\/themes\/gratorama3\/js\/swfobject.js":1,"sites\/all\/themes\/gratorama3\/js\/jquery.stylish-select.min.js":1,"sites\/all\/themes\/gratorama3\/js\/ui.js":1},"css":{"modules\/system\/system.base.css":1,"modules\/system\/system.menus.css":1,"modules\/system\/system.messages.css":1,"modules\/system\/system.theme.css":1,"modules\/field\/theme\/field.css":1,"modules\/node\/node.css":1,"modules\/user\/user.css":1,"sites\/all\/modules\/views\/css\/views.css":1,"sites\/all\/modules\/ctools\/css\/ctools.css":1,"sites\/all\/themes\/gratorama3\/system.menus.css":1,"sites\/all\/themes\/gratorama3\/css\/style.css":1,"sites\/all\/themes\/gratorama3\/css\/stylish-select.css":1,"sites\/all\/themes\/gratorama3\/css\/mobile.css":1}}});</script>
+      <!--[if lt IE 9]>
+    <script src="/sites/all/themes/zen/js/html5-respond.js"></script>
+    <![endif]-->
+      <script type="text/javascript" src="/visitorCountry.php?language=fi"></script>
+    	<script type="text/javascript">
+		var brandInfo = {
+		    Id: 2,
+		    Lang: "fi",
+		    Domain: "gratorama.com",
+		    pageType: "website",
+		    GAAccount: "UA-35862028-1"
+		};
+	</script>
+    <script type="text/javascript" src="//cdn.hermione-ltd.com/assets/js/utils.js?v101"></script>
+    <script type="text/javascript" src="//cdn.hermione-ltd.com/assets/js/playerInfo.js?v101"></script>
+    <script type="text/javascript" src="//cdn.hermione-ltd.com/assets/js/popups.js?fv101"></script>
 
 </head>
-	
-<body data-gr-c-s-loaded="true" cz-shortcut-listen="true">
+<body class="html front not-logged-in no-sidebars page-node page-node- page-node-1733 node-type-basic-content i18n-fi  page- section-" >
+        <!-- Google Tag Manager -->
+    <script>
+      dataLayer = [];
+    </script>
+    <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MM92NX"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MM92NX');</script>
+    <!-- End Google Tag Manager -->
 
-<div id="youtubeDiv" style="height:330;width:380"></div>
+     
+  <!-- BEGIN LivePerson Monitor. -->
+  <script type="text/javascript"> window.lpTag=window.lpTag||{};if(typeof window.lpTag._tagCount==='undefined'){window.lpTag={site:'70099149'||'',section:lpTag.section||'',autoStart:lpTag.autoStart===false?false:true,ovr:lpTag.ovr||{},_v:'1.6.0',_tagCount:1,protocol:'https:',events:{bind:function(app,ev,fn){lpTag.defer(function(){lpTag.events.bind(app,ev,fn);},0);},trigger:function(app,ev,json){lpTag.defer(function(){lpTag.events.trigger(app,ev,json);},1);}},defer:function(fn,fnType){if(fnType==0){this._defB=this._defB||[];this._defB.push(fn);}else if(fnType==1){this._defT=this._defT||[];this._defT.push(fn);}else{this._defL=this._defL||[];this._defL.push(fn);}},load:function(src,chr,id){var t=this;setTimeout(function(){t._load(src,chr,id);},0);},_load:function(src,chr,id){var url=src;if(!src){url=this.protocol+'//'+((this.ovr&&this.ovr.domain)?this.ovr.domain:'lptag.liveperson.net')+'/tag/tag.js?site='+this.site;}var s=document.createElement('script');s.setAttribute('charset',chr?chr:'UTF-8');if(id){s.setAttribute('id',id);}s.setAttribute('src',url);document.getElementsByTagName('head').item(0).appendChild(s);},init:function(){this._timing=this._timing||{};this._timing.start=(new Date()).getTime();var that=this;if(window.attachEvent){window.attachEvent('onload',function(){that._domReady('domReady');});}else{window.addEventListener('DOMContentLoaded',function(){that._domReady('contReady');},false);window.addEventListener('load',function(){that._domReady('domReady');},false);}if(typeof(window._lptStop)=='undefined'){this.load();}},start:function(){this.autoStart=true;},_domReady:function(n){if(!this.isDom){this.isDom=true;this.events.trigger('LPT','DOM_READY',{t:n});}this._timing[n]=(new Date()).getTime();},vars:lpTag.vars||[],dbs:lpTag.dbs||[],ctn:lpTag.ctn||[],sdes:lpTag.sdes||[],ev:lpTag.ev||[]};lpTag.init();}else{window.lpTag._tagCount+=1;} </script>
+  <!-- END LivePerson Monitor. -->
 
-</body></html>
+      <p id="skip-link">
+      <a href="#main-menu" class="element-invisible element-focusable">Jump to navigation</a>
+    </p>
+      <div id="contentarea2">
+    <div id="home">
+        <div id="main">
+            <div id="header">
+                                    <a href="https://fi.gratorama.com/" title="Home" rel="home"><img id="logo" class="open-games" src="https://fi.gratorama.com/sites/gratorama.com/files/logo_gratorama_en_1.png" alt="Home" /></a>
+                                    <div class="loginAndRegistrationButtons">
+        <div onclick="OpenGamesWindow('','login')">
+            <img src="https://files.gratorama.com/buttons/login/login_FI.png">
+        </div>
+        <div  onclick="OpenGamesWindow('','registration')">
+                <img src="https://files.gratorama.com/buttons/join/join_FI.png">
+        </div>
+    </div>
+    <div id="lang_select">
+        <span>Suomi</span>
+        <ul>
+                                    <li><a href="https://en.gratorama.com/">English</a></li>
+                                                <li><a href="https://fr.gratorama.com/">Français</a></li>
+                                                <li><a href="https://de.gratorama.com/">Deutsch</a></li>
+                                                <li><a href="https://no.gratorama.com/">Norsk</a></li>
+                                                <li><a href="https://pt.gratorama.com/">Portuguese</a></li>
+                                                <li><a href="https://es.gratorama.com/">Español</a></li>
+                                                <li><a href="https://sv.gratorama.com/">Svenska</a></li>
+                                                <li><a href="https://tr.gratorama.com/">Türkçe</a></li>
+                                </ul>
+    </div>
+    <a href="https://www.facebook.com/gratorama" class="facebook_button" target="_blank"></a>
+    <div class="header__region region region-header">
+        <div id="block-menu-block-3" class="block block-menu-block first last odd" role="navigation">
+
+      
+  <div class="menu-block-wrapper menu-block-3 menu-name-main-menu parent-mlid-0 menu-level-1">
+  <ul class="menu"><li class="menu__item is-active is-leaf first leaf active menu-mlid-5875"><a href="https://fi.gratorama.com/" class="menu__link active">Etusisvu</a></li><li><img src="/sites/all/themes/gratorama/images/navline.png" alt="" /></li><li class="menu__item is-leaf leaf menu-mlid-5877"><a href="https://fi.gratorama.com/about-us/about_us.html" title="" class="menu__link">Tietoa meistä</a></li><li><img src="/sites/all/themes/gratorama/images/navline.png" alt="" /></li><li class="menu__item is-leaf leaf menu-mlid-5879"><a href="https://fi.gratorama.com/promotions/promotions.html" class="menu__link">Tarjoukset</a></li><li><img src="/sites/all/themes/gratorama/images/navline.png" alt="" /></li><li class="menu__item is-leaf leaf menu-mlid-6717"><a href="https://fi.gratorama.com/promotions/VIP-points.html" title="" class="menu__link">Bonuspisteet</a></li><li><img src="/sites/all/themes/gratorama/images/navline.png" alt="" /></li><li class="menu__item is-leaf leaf menu-mlid-5883"><a href="https://fi.gratorama.com/vip/vip.html" title="" class="menu__link">VIP</a></li><li><img src="/sites/all/themes/gratorama/images/navline.png" alt="" /></li><li class="menu__item is-parent is-leaf leaf has-children menu-mlid-5953"><a href="https://fi.gratorama.com/banking/depositing-funds.html" title="" class="menu__link">Pankkiasiat</a></li><li><img src="/sites/all/themes/gratorama/images/navline.png" alt="" /></li><li class="menu__item is-leaf leaf menu-mlid-5887"><a href="https://fi.gratorama.com/contact/contact.html" class="menu__link">Ota yhteyttä</a></li><li><img src="/sites/all/themes/gratorama/images/navline.png" alt="" /></li><li class="menu__item is-parent is-leaf last leaf has-children menu-mlid-6279"><a href="https://fi.gratorama.com/help/help.html" title="" class="menu__link">Apu</a></li></ul>    <span class="bottom-border"></span>
+</div>
+
+</div>
+    </div><!-- /.region -->
+            </div>
+
+            <script type="text/javascript" src="/sites/all/themes/gratorama2/js/jquery.slideShow.js?v=28"></script>
+            <script type="text/javascript" src="https://gratorama.netoplaycdn.com/theme/formatMoney.js"></script>
+            <div id="flash_banner_wrapper" class="open-games">
+                                <img src="https://files.gratorama.com/en/bgBanner.png">
+            </div>
+            <div id="main_content">
+                <div id="content" class="column content" role="main">
+                    <div id="content_wrapper">
+                                                                        <div id="front_titles">
+                            <div class="item games">
+                                <h2><span>Pelimme</span><span class="promos" style="float: right; margin-right: 100px; margin-top: -5px;"><img style="position: relative; height: 30px; margin-right: 10px;"  src="https://gratorama.netoplaycdn.com/theme/images/pci-logo_s_small.png?v1"><img src="https://gratorama.netoplaycdn.com/theme/images/verisign.png" alt="VeriSign" style="border: none !important; position: relative;" /></span></h2>
+                                  <div class="region region-games-thumbnails">
+    <div id="block-views-games-thumbnails-block" class="block block-views first last odd">
+
+      
+  <div class="view view-games-thumbnails view-id-games_thumbnails view-display-id-block view-dom-id-c215c7bb50b8564c47f4db5abb11b785">
+        
+  
+  
+      <div class="view-content">
+      <div class="item-list">    <ul>          <li class="views-row views-row-1 views-row-odd views-row-first">  
+  <div class="views-field views-field-field-image">        <div class="field-content"><img typeof="foaf:Image" src="https://files.gratorama.com/files.gratorama.com/Gratorama_New_2.png" width="162" height="75" alt="" /></div>  </div>  
+  <div class="views-field views-field-field-game-id">        <div class="field-content">254</div>  </div></li>
+          <li class="views-row views-row-2 views-row-even">  
+  <div class="views-field views-field-field-image">        <div class="field-content"><img typeof="foaf:Image" src="https://files.gratorama.com/files.gratorama.com/Gratorama_Regular_29.png" width="162" height="75" alt="" /></div>  </div>  
+  <div class="views-field views-field-field-game-id">        <div class="field-content">171</div>  </div></li>
+          <li class="views-row views-row-3 views-row-odd">  
+  <div class="views-field views-field-field-image">        <div class="field-content"><img typeof="foaf:Image" src="https://files.gratorama.com/files.gratorama.com/Gratorama_Regular_27.png" width="159" height="75" alt="" /></div>  </div>  
+  <div class="views-field views-field-field-game-id">        <div class="field-content">237</div>  </div></li>
+          <li class="views-row views-row-4 views-row-even">  
+  <div class="views-field views-field-field-image">        <div class="field-content"><img typeof="foaf:Image" src="https://files.gratorama.com/files.gratorama.com/Gratorama_New_1.png" width="162" height="75" alt="" /></div>  </div>  
+  <div class="views-field views-field-field-game-id">        <div class="field-content">242</div>  </div></li>
+          <li class="views-row views-row-5 views-row-odd">  
+  <div class="views-field views-field-field-image">        <div class="field-content"><img typeof="foaf:Image" src="https://files.gratorama.com/files.gratorama.com/Gratorama_sc_Regular_0.png" width="162" height="75" alt="" /></div>  </div>  
+  <div class="views-field views-field-field-game-id">        <div class="field-content">233</div>  </div></li>
+          <li class="views-row views-row-6 views-row-even">  
+  <div class="views-field views-field-field-image">        <div class="field-content"><img typeof="foaf:Image" src="https://files.gratorama.com/files.gratorama.com/Gratorama_Regular_28.png" width="162" height="75" alt="" /></div>  </div>  
+  <div class="views-field views-field-field-game-id">        <div class="field-content">235</div>  </div></li>
+          <li class="views-row views-row-7 views-row-odd">  
+  <div class="views-field views-field-field-image">        <div class="field-content"><img typeof="foaf:Image" src="https://files.gratorama.com/files.gratorama.com/Gratorama_Regular_26.png" width="162" height="75" alt="" /></div>  </div>  
+  <div class="views-field views-field-field-game-id">        <div class="field-content">236</div>  </div></li>
+          <li class="views-row views-row-8 views-row-even">  
+  <div class="views-field views-field-field-image">        <div class="field-content"><img typeof="foaf:Image" src="https://files.gratorama.com/files.gratorama.com/Gratorama_Regular_23.png" width="162" height="75" alt="" /></div>  </div>  
+  <div class="views-field views-field-field-game-id">        <div class="field-content">234</div>  </div></li>
+          <li class="views-row views-row-9 views-row-odd">  
+  <div class="views-field views-field-field-image">        <div class="field-content"><img typeof="foaf:Image" src="https://files.gratorama.com/files.gratorama.com/Gratorama_Regular_22.png" width="162" height="75" alt="" /></div>  </div>  
+  <div class="views-field views-field-field-game-id">        <div class="field-content">241</div>  </div></li>
+          <li class="views-row views-row-10 views-row-even">  
+  <div class="views-field views-field-field-image">        <div class="field-content"><img typeof="foaf:Image" src="https://files.gratorama.com/files.gratorama.com/228_Tablet.jpg" width="162" height="68" alt="" /></div>  </div>  
+  <div class="views-field views-field-field-game-id">        <div class="field-content">228</div>  </div></li>
+          <li class="views-row views-row-11 views-row-odd">  
+  <div class="views-field views-field-field-image">        <div class="field-content"><img typeof="foaf:Image" src="https://files.gratorama.com/files.gratorama.com/CashCruise_Tablet_List_Icon.jpg" width="162" height="68" alt="" /></div>  </div>  
+  <div class="views-field views-field-field-game-id">        <div class="field-content">240</div>  </div></li>
+          <li class="views-row views-row-12 views-row-even">  
+  <div class="views-field views-field-field-image">        <div class="field-content"><img typeof="foaf:Image" src="https://files.gratorama.com/files.gratorama.com/Gratorama_Regular_2.png" width="162" height="75" alt="" /></div>  </div>  
+  <div class="views-field views-field-field-game-id">        <div class="field-content">101</div>  </div></li>
+          <li class="views-row views-row-13 views-row-odd">  
+  <div class="views-field views-field-field-image">        <div class="field-content"><img typeof="foaf:Image" src="https://files.gratorama.com/files.gratorama.com/Gratorama_Regular%20%282%29.png" width="162" height="75" alt="" /></div>  </div>  
+  <div class="views-field views-field-field-game-id">        <div class="field-content">217</div>  </div></li>
+          <li class="views-row views-row-14 views-row-even">  
+  <div class="views-field views-field-field-image">        <div class="field-content"><img typeof="foaf:Image" src="https://files.gratorama.com/files.gratorama.com/Gratorama_Regular%20%281%29_0.png" width="162" height="75" alt="" /></div>  </div>  
+  <div class="views-field views-field-field-game-id">        <div class="field-content">181</div>  </div></li>
+          <li class="views-row views-row-15 views-row-odd">  
+  <div class="views-field views-field-field-image">        <div class="field-content"><img typeof="foaf:Image" src="https://files.gratorama.com/files.gratorama.com/Gratorama_Regular_25.png" width="162" height="75" alt="" /></div>  </div>  
+  <div class="views-field views-field-field-game-id">        <div class="field-content">201</div>  </div></li>
+          <li class="views-row views-row-16 views-row-even">  
+  <div class="views-field views-field-field-image">        <div class="field-content"><img typeof="foaf:Image" src="https://files.gratorama.com/files.gratorama.com/Gratorama_Regular_24.png" width="162" height="75" alt="" /></div>  </div>  
+  <div class="views-field views-field-field-game-id">        <div class="field-content">226</div>  </div></li>
+          <li class="views-row views-row-17 views-row-odd">  
+  <div class="views-field views-field-field-image">        <div class="field-content"><img typeof="foaf:Image" src="https://files.gratorama.com/files.gratorama.com/Gratorama_New_3.png" width="162" height="75" alt="" /></div>  </div>  
+  <div class="views-field views-field-field-game-id">        <div class="field-content">225</div>  </div></li>
+          <li class="views-row views-row-18 views-row-even">  
+  <div class="views-field views-field-field-image">        <div class="field-content"><img typeof="foaf:Image" src="https://files.gratorama.com/files.gratorama.com/Gratorama_Regular_20.png" width="162" height="75" alt="" /></div>  </div>  
+  <div class="views-field views-field-field-game-id">        <div class="field-content">220</div>  </div></li>
+          <li class="views-row views-row-19 views-row-odd">  
+  <div class="views-field views-field-field-image">        <div class="field-content"><img typeof="foaf:Image" src="https://files.gratorama.com/files.gratorama.com/Gratorama_Regular.jpg" width="162" height="75" alt="" /></div>  </div>  
+  <div class="views-field views-field-field-game-id">        <div class="field-content">232</div>  </div></li>
+          <li class="views-row views-row-20 views-row-even">  
+  <div class="views-field views-field-field-image">        <div class="field-content"><img typeof="foaf:Image" src="https://files.gratorama.com/files.gratorama.com/Gratorama_Regular_21.png" width="162" height="75" alt="" /></div>  </div>  
+  <div class="views-field views-field-field-game-id">        <div class="field-content">218</div>  </div></li>
+          <li class="views-row views-row-21 views-row-odd views-row-last">  
+  <div class="views-field views-field-field-image">        <div class="field-content"><img typeof="foaf:Image" src="https://files.gratorama.com/files.gratorama.com/Gratorama_Regular_19.png" width="162" height="75" alt="" /></div>  </div>  
+  <div class="views-field views-field-field-game-id">        <div class="field-content">174</div>  </div></li>
+      </ul></div>    </div>
+  
+  
+  
+  
+  
+  
+</div>
+</div>
+  </div>
+                            </div>
+
+                            <div class="item stick">
+                                <h2>Viimeisimmät voittajat</h2>
+                                <script>
+                                    (function ($) {
+
+                                        $.getJSON( "https://secure.twinoplay.com/server/api/recentWinnersServlet?jsonObject={methodName:getRecentWinners}",function( data ) {
+                                            var lang = "en";
+                                            var host = window.location.hostname;
+                                            var hostArr = host.split('.');
+                                            if(hostArr[0].length == 2){
+                                                lang = hostArr[0];
+                                            }
+                                            $.each( data.result.recentWins, function( key, val ) {
+                                                var $li = $('<li>');
+                                                var formattedAmount = parseInt(val["amount"]);
+                                                formattedAmount=formattedAmount/100;
+                                                var html = "";
+                                                if (lang=="de" || lang=="es" || lang=="el"){
+                                                    html = val["name"] +"<div class='amount'>" +formattedAmount.formatMoney(2,'.')+val["currency"]+"</div>";
+                                                } else if (lang=="fr" || lang=="no" || lang=="fi"|| lang=="sv"){
+                                                    html = val["name"] +"<div class='amount'>" +formattedAmount.formatMoney(2,' ')+val["currency"]+"</div>";
+                                                } else if (lang=="it"){
+                                                    html = val["name"] +"<div class='amount'>" +val["currency"]+formattedAmount.formatMoney(2,'.')+"</div>";
+                                                } else { //Default English and NL
+                                                    html = val["name"] +"<div class='amount'>" +val["currency"]+formattedAmount.formatMoney(2,',')+"</div>";
+                                                }
+                                                $li.html(html);
+                                                $('#latest_winners ul').append($li);
+                                            });
+                                            $('#latest_winners ul').slideShow({"shown": 3, "interval": 4000, "slideSpeed":1000, "fadeSpeed":1000});
+                                        });
+
+
+                                    })(jQuery);
+
+                                </script>
+                                <div id="latest_winners">
+                                    <ul>
+
+                                    </ul>
+                                </div>
+                            </div>
+                            <script type="text/javascript" src="/sites/all/themes/gratorama2/js/gameOpener.js?v=19"></script>
+                            <div id="banner_promotion">
+                            </div>
+                        </div>
+                        <div id="games_categories">
+                            <h2>Mahtavia tarjouksia</h2>
+                              <div class="region region-promotions">
+    <div id="block-views-three-promo-block" class="block block-views first last odd">
+
+      
+  <div class="view view-three-promo view-id-three_promo view-display-id-block view-dom-id-e034cd3e69dc07401223e34a435f8de3">
+        
+  
+  
+      <div class="view-content">
+        <div class="views-row views-row-1 views-row-odd views-row-first">
+      
+  <div class="views-field views-field-field-image-banner">        <div class="field-content"><a href="https://fi.gratorama.com/promotions/first-deposit-bonus.html"><img typeof="foaf:Image" src="https://files.gratorama.com/files.gratorama.com/files/2_100prc_bonus_8.png" width="225" height="146" alt="" /></a></div>  </div>  </div>
+  <div class="views-row views-row-2 views-row-even">
+      
+  <div class="views-field views-field-field-image-banner">        <div class="field-content"><a href="https://fi.gratorama.com/promotions/alternative-bonus.html"><img typeof="foaf:Image" src="https://files.gratorama.com/files.gratorama.com/files/3_15prc_bonus%20%281%29_0.png" width="225" height="146" alt="" /></a></div>  </div>  </div>
+  <div class="views-row views-row-3 views-row-odd views-row-last">
+      
+  <div class="views-field views-field-field-image-banner">        <div class="field-content"><a href="https://fi.gratorama.com/promotions/welcome-bonus.html"><img typeof="foaf:Image" src="https://files.gratorama.com/files.gratorama.com/files/1_7_Free_10.png" width="225" height="146" alt="" /></a></div>  </div>  </div>
+    </div>
+  
+  
+  
+  
+  
+  
+</div>
+</div>
+  </div>
+                        </div>
+                        <div id="jackpot">
+                            <h2>JÄTTIPOTTIMME</h2>
+                            <div id="jacpot_coins">
+                                <script type="text/javascript">
+                                    var lang = "fi";
+                                    var curSym = getCurrencySymbol();
+                                    var cur = getCurrencyString();
+                                    if (lang=="de" || lang=="es" || lang=="el"){
+                                        document.write("<h3>200.000"+curSym+"</h3>");
+                                    } else if (lang=="fr" || lang=="fi"){
+                                        document.write("<h3>200 000"+curSym+"</h3>");
+                                    } else if (lang=="it"){
+                                        document.write("<h3>"+curSym+"200.000</h3>");
+                                    } else if ((lang=="no" || lang=="sv") && cur=='krona'){
+                                        document.write("<h3 style='font-size:36px !important; margin-top: 2px !important;'>2 000 000kr.</h3>");
+                                    } else if ((lang=="no" || lang=="sv") && cur!='krona'){
+                                        document.write("<h3>200 000"+curSym+"</h3>");
+                                    } else if (lang=="ru"){
+                                        document.write("<h3>200 000y.e</h3>");
+                                    } else {
+                                        document.write("<h3>"+curSym+"200,000</h3>");
+                                    }
+                                </script>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /#content -->
+        </div><!-- /#main -->
+
+                <div class="footer_text">
+            <h1>Gratorama</h1>
+            <p>
+                Kaikki oikeudet pidätetään. Gratorama.com-nimikkeen toiminnasta vastaa Kyproksen lainsäädännön mukaisesti perustettu Hermione Ltd., jonka rekisteröity osoite on Inomenon Ethnon 44, Larnaka 6042, Cyprus. Hermione Ltd. puolestaan toimii Curacaon laindääsännön mukaisesti perustetun Twino Trading N.V.:n puolesta, jonka rekisteröity osoite on E-Commerce Park Vredenberg, Curacao. Twino Trading N.V. omaa Curacaon hallituksen myöntämän toimiluvan, ja sillä on tiedontarjoajana oikeus tarjota verkkopelaamispalveluita Curacaolta käsin. Verkkopelaamisen lisenssistä ja sen valvonnasta vastaa Antillephone N.V. (lisenssi 8048/JAZ2015-023)            </p>
+        </div>
+    </div><!-- /#page -->
+</div>
+</div>
+<div id="footerarea">
+    <div id="infooter">
+        <div id="footer_icons">
+            <div class="sec-ico" style="display: table; margin: auto;">
+                <img style="float: left;position: relative;top: 14px;"  src="https://cdn.hermione-ltd.com/assets/img/PCI.png">
+                <img style="float: left;border: none !important; display: inline-block;margin-top: 10px;" alt="18+" src="https://gratorama.netoplaycdn.com/theme/images/18plus.png">
+                <img src="https://gratorama.netoplaycdn.com/theme/images/GA.png" alt="GA" style="float: left;border: none !important;margin-top: 20px;height:20px; width:26px;" />
+                <!--                <a style="display: inline-block;" href="http://www.gaminglicences.com/pages/validate.php?lid=8048-T3107414" target="_blank"><img src="https://cdn.hermione-ltd.com/assets/img/curacao.png?v=1" alt="VeriSign" style="border: none !important; position: relative; top: 7px;" /></a>-->
+                                    <div style="width: 34px;float: right;margin-top: 12px;" id="apg-ce2ea48a-824a-4bb3-8fc9-420937f7e5a7" data-apg-seal-id="ce2ea48a-824a-4bb3-8fc9-420937f7e5a7" data-apg-image-size="128" data-apg-image-type="basic-small"></div>
+                    <script type="text/javascript" src="https://ce2ea48a-824a-4bb3-8fc9-420937f7e5a7.snippet.antillephone.com/apg-seal.js"></script>
+                            </div>
+            <div class="pimgs">
+                <img width="900" height="100" src="https://www.gratorama.com/credit.php">
+            </div><!-- end of icons -->
+            <div class="footline">
+                <p>Copyright &copy; <em class="placeholder">2020</em> Gratorama.com</p>
+            </div><!-- ending of footline -->
+        </div><!-- ending of footer -->
+    </div><!-- ending of infooter -->
+</div><!-- ending of footerarea -->
+      
+    <div id="click"></div> 
+    <script language="javascript">
+    checkClick();
+    </script>
+    
+    <script language="javascript">
+		    var flashvars = {};
+		    var params = {
+		      play: "true",
+		      quality: "high",
+		      wmode: "transparent",
+		      align: "middle",
+		      allowScriptAccess: "always",
+		      allowFullScreen: "false"
+		    };
+		    var attributes = {
+		      id: "pixelCookie",
+		      name: "pixelCookie"
+		    };
+		    swfobject.embedSWF("https://downloads.netoplay.com/games/pixelCookie.swf?ver=v101", 
+                    "flashPixelCookie", 
+                    "1", 
+                    "1", 
+                    "11.0.0", 
+                    "https://downloads.netoplay.com/games/expressInstall.swf", 
+                    flashvars, 
+                    params, 
+                    attributes);					
+
+		    // Replace the bucket name
+            jQuery("img").each(function(){
+                jQuery(this).attr("src" ,jQuery(this).attr("src").replace("files.gratorama.com/files.gratorama.com","files.gratorama.com")) ;
+            });
+    </script>
+    <div id="flashPixelCookie" class="flashPixelCookie"></div>
+</body>
+</html>
